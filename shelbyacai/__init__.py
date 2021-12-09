@@ -30,5 +30,8 @@ login_manager.login_view = 'users.login'
 
 from shelbyacai.core.views import core
 from shelbyacai.error_pages.handlers import error_pages
+from shelbyacai.users.views import users
+
+app.register_blueprint(users)
 app.register_blueprint(core)
 app.register_blueprint(error_pages)
