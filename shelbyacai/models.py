@@ -19,7 +19,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     admin = db.Column(db.Boolean, nullable=True)
 
-    orders = db.relationship('Order', backref='OrderId', lazy=True)
+    orders = db.relationship('Order', backref='user', lazy=True)
 
     def __init__(self, email, password, username, address, cellphone):
         self.email = email
