@@ -6,7 +6,7 @@ from shelbyacai import db
 from shelbyacai.models import User, Order
 from shelbyacai.users.forms import RegistrationForm, LoginForm, UpdateUserForm
 
-users = Blueprint('users', __name__)
+users = Blueprint('user', __name__)
 
 #register
 @users.route('/register', methods=['GET', 'POST'])
@@ -16,12 +16,14 @@ def register():
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
-                    password=form.password.data)
+                    password=form.password.data,
+                    cellphone=form.cellphone.data,
+                    address=form.address.data)
 
         db.session.add(user)
         db.session.commit()
         flash('Thanks for registration!')
-        return redirect(url_for('users.login'))         
+        return redirect(url_for('user.login'))         
     return render_template('register.html', form=form)
 
 #login
@@ -64,7 +66,7 @@ def account():
 
         db.session.commit()
         flash('User account updated!')
-        return redirect(url_for('users.account'))
+        return redirect(url_for('user.account'))
 
     
     elif request.method == "GET":
@@ -81,6 +83,6 @@ def account():
 @users.route('/<username>')
 def user_orders(username):
     page = request.args.get('page', 1, type=int)
-    user = User.query.filter_by(user=username).first_or_400()
-    orders = Order.query.filter_by(user=username).order_by(Order.date.desc()).paginate(page=page,per_page=5)
-    return render_template('user_orders.html', orders=orders, user=user)
+    users = User.query.filter_by(username=username).first_or_404()
+    orders = Order.query.filter_by(username=username).order_by(Order.date.desc()).paginate(page=page,per_page=5)
+    return render_template('user_orders.html', orders=orders, user=users)
