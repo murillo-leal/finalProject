@@ -4,7 +4,7 @@ from shelbyacai import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
-from enum import Enum
+import enum
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
@@ -36,12 +36,7 @@ class User(db.Model, UserMixin):
 def load_user(user_id):
     return User.query.get(user_id)
 
-# order_product_table = db.Table('association', db.Model.metadata,
-#             db.Column('product_id', db.Integer, db.ForeignKey('product.id')),
-#             db.Column('topping_id', db.Integer, db.ForeignKey('topping.id')))
-
-
-class Topping(Enum):
+class Topping(enum.Enum):
     OREO  = 4
     MILK = 1
     GRANOLA = 1
@@ -49,24 +44,25 @@ class Topping(Enum):
     NESCAUBALL = 2
     PAÇOCA = 3
 
+product_order = db.Table('product_order',
+    db.Column('order_id', db.Integer, db.ForeignKey('order.id'), primary_key=True),
+    db.Column('product_id', db.Integer, db.ForeignKey('product.id'), primary_key=True))
+
 class Product(db.Model):
     __tablename__ = 'product'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
     size = db.Column(db.String, nullable=False)
     value = db.Column(db.Integer, nullable=False)    
     toppings = db.Column(db.Enum(Topping))
 
-    def calculateFinalValue(self, toppings):
-        return self.value + toppings.value
+    def calculateFinalValue(self):
+        return self.value + self.toppings.value
 
-    def __init__(self, toppings, name, size, value, finalvalue):
-        self.name = name
+    def __init__(self, toppings, size, value):
         self.toppings = toppings
         self.size = size
         self.value = value        
-        self.finalvalue = finalvalue   
 
     def __repr__(self):
         return f"Product Id: {self.id} -- Product Size: {self.size} --- Product Value {self.value} ---  Product Toppings: {self.toppings}--- Toppings Value:{self.toppings.finalvalue}  --- Final Value:{self.finalvalue}"
@@ -80,13 +76,15 @@ class Order(db.Model):
     value = db.Column(db.String, nullable=False)
     payment = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    product = db.relationship(Product, backref=db.backref("order", cascade="all, delete-orphan"))    
+    details = db.Column(db.Text)
+    product = db.relationship('Product', secondary=product_order, lazy='subquery')    
 
-    def __init__(self,user_id, products, payment, value):
+    def __init__(self,user_id, products, payment, value, details):
         payment = payment
         user_id = user_id
         products = products
         value = value
+        details = details
 
     def __repr__(self):
         return f"Order Id: {self.id} -- Date: {self.date} --- Products {self.products}"       
