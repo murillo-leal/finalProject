@@ -18,7 +18,6 @@ def email_exists(form, field):
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Log In')
 
 class RegistrationForm(FlaskForm):
     name = StringField('Full Name', validators=[DataRequired()])
