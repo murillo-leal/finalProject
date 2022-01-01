@@ -5,8 +5,6 @@ from flask_login import LoginManager, login_user, login_required, current_user, 
 from flask_uploads import configure_uploads
 from flask_wtf import file
 
-from itsdangerous import URLSafeTimedSerializer
-
 from threading import Thread
 
 from werkzeug.datastructures import CombinedMultiDict, FileStorage
@@ -30,7 +28,7 @@ configure_uploads(app, (forms.images,))
 login_manager = LoginManager()
 
 login_manager.init_app(app)
-login_manager.login_view = 'user.login'
+login_manager.login_view = 'login'
 
 
 #UserRoutes
