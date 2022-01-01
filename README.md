@@ -3,7 +3,7 @@
 ## Final project to CS50x
 ## Description: 
 
-## Don Hermano WebStore ##
+## Don Hermano WebStore 
 Technologies used:
 -Flask
 -Python
@@ -13,7 +13,7 @@ Technologies used:
 -Peewee
 -Werkzeug
 
-## How the webpage works?##
+## How the webpage works?
 
 It's a online web store, where you can buy the best mexican food.
 Must be registered on the site to buy
@@ -25,7 +25,7 @@ Name
 
 Admin user can edit products details, price and storage.
 
-###Routing
+## Routing
 You can see the products but can't buy it without logged in, so some routes checks if the user is authenticated and if is administrator
 
 ## Database
