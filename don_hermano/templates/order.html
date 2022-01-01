@@ -1,0 +1,29 @@
+{% extends "template.html" %} 
+{% block title %}Cart - {% endblock %}
+{% block content %} 
+<div class="cart container">
+    <div class="card">
+        <div class="heading">Your Cart</div>
+        {% for product in products %}
+        <div class="item">
+            <div class="left">
+                <img src="/product_images?image={{product.image}}" alt="">
+            </div>
+            <div class="right">
+                <p>{{ product.category }}</p>
+                <p class="price">Price : R${{ product.value }} x {{ product.order.count }} =  R${{product.value * product.order.count }}</p>
+                <p class="quantity">Quantity : {{ product.order.count }}</p>
+                <p class="note">To increase quantity click again on add to cart</p>
+                <a class="btn btn-small" href="{{url_for('delete_order', product_id=product.id)}}">Remove</a>
+            </div>
+        </div>
+        {% else %}
+            <p style="text-align: center; width:100%">No Products has been added to your cart.</p>
+        {% endfor %}
+        <div class="button">
+            <a class="btn btn-highlight" href="{{url_for('index')}}">Continue Shopping</a>
+                <a class="btn btn-highlight" href="{{url_for('checkout')}}">Checkout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
