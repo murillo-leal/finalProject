@@ -1,0 +1,23 @@
+{% extends "template.html" %}
+{% block title %}{{ user.full_name }} - {% endblock %}
+{% block content %}
+<div class="cart user-profile container">
+    <p class="title">Welcome! {{ user.full_name }}</p>
+
+    {% for product in products %}
+    <div class="card">
+        <div class="item">
+            <div class="left">
+                <img src="/product_images?image={{product.image}}" alt="">
+            </div>
+            <div class="right">
+                <p class="quantity">Order ID: {{ product.buyhistory.order_id }}</p>
+                <p class="quantity">{{ product.name }}</p>
+                <p class="quantity">Quantity : {{ product.buyhistory.product_quantity }}</p>
+                <p class="quantity">Order on : {{product.buyhistory.buy_time}}</p>
+            </div>
+        </div>        
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

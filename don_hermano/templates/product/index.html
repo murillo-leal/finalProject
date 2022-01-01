@@ -1,0 +1,36 @@
+{% extends "/template.html" %}
+{% block content %}
+<div class="container product-big-details" width="70%">
+    <div class="card product">
+        <div class="left">
+            <img class="img-fluid" src="/product_images?image={{product.image}}" alt="{{product.name}}" id="main-image-product">
+        </div>
+        <div class="right">
+            <h1 class="p-title">{{product.name}}</h1>
+            <p class="price">PRICE:
+                <span>R${{product.value}}</span>
+            </p>
+            {% if product.size %}
+            <p class="text">             
+            <span class="list-circle"></span>Size : {{product.size}}</p>
+            {% endif %}
+            {% if product.category %}
+            <p class="text">             
+            <span class="list-circle"></span>Category : {{product.category}}</p>
+            {% endif %}
+            {% if product.details %}
+            <p class="text">             
+            <span class="list-circle"></span>Details : {{product.details}}</p>
+            {% endif %}
+            <div class="button-group">
+                <a class="btn btn-highlight" href="{{url_for('buy_now', product_id=product.id)}}">Buy now!</a>
+                <a class="btn btn-dark" href="{{url_for('add_order', product_id=product.id)}}">Add to cart!</a>
+            {% if user.admin %}
+                <a class="btn btn-dark" href="{{ url_for('dashboard_product_edit', id=product.id) }}">Edit Product</a>
+                <a class="btn btn-dark" href="{{ url_for('dashboard_product_delete', id=product.id) }}">Delete Product</a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

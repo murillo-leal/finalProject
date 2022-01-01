@@ -1,0 +1,39 @@
+{% extends "template.html" %}
+{% block content %}
+  <div class="jumbotron">
+    <h1>Don Hermano! Mexican Food</h1>
+  </div>
+
+  <div class="container">
+    <div class="p_categories">
+      <p style="text-align:right">
+        <a href="{{url_for('index')}}" class="btn btn-light">All</a>
+        <a href="{{url_for('products_nachos')}}" class="btn btn-light">Nachos</a>
+        <a href="{{url_for('products_burritos')}} " class="btn btn-light">Burritos</a>
+        <a href="{{url_for('products_quesadilla')}}" class="btn btn-light">Quesadilla</a>
+        <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Tacos</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="products container p-grid">
+    {% for item in products %}
+    <div class="p-grid-item">
+      <a href="{{ url_for('product_index', name=item.name) }}">
+        <div class="card">
+          <div class="item-price">
+            <div class="left"></div>
+            <div class="right">
+              <span>R$ {{ item.price }}</span>
+            </div>
+          </div>
+          <img src="/product_images?image={{item.image}}" alt="{{item.name}}">
+          <div class="product-details">
+              <p>{{item.name}}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}
